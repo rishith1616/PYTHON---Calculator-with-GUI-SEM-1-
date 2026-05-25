@@ -26,11 +26,25 @@ def calculate():
         display.delete(0, tk.END)
         display.insert(0, "Error")
 
+def resize_font(e):
+    display_font_size = max(12, min(root.winfo_width() // 15, root.winfo_height() // 10))
+    button_font_size = max(8, min(root.winfo_width() // 25, root.winfo_height() // 18))
+    
+     # Resize display font
+    display.config(font=("Arial", display_font_size))
+
+    # Resize all button fonts
+    for widget in root.winfo_children():
+        if isinstance(widget, tk.Button):
+            widget.config(font=("Arial", button_font_size))
+
+
 
 # 1. Initialize the main application window
 root = tk.Tk()
 root.title("Calculator With GUI")
 root.minsize(150, 200)
+root.bind("<Configure>", resize_font)
 
 # 2. Create the display entry box
 display = tk.Entry(
