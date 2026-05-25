@@ -30,13 +30,13 @@ def calculate():
 # 1. Initialize the main application window
 root = tk.Tk()
 root.title("Calculator With GUI")
+root.minsize(150, 200)
 
 # 2. Create the display entry box
 display = tk.Entry(
-    root, width=16, font=("Arial", 24), borderwidth=5, justify="right"
-)
+    root, width=16, font=("Arial", 24), borderwidth=5, justify="right")
 # Place the display at the top, spanning across 4 columns
-display.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+display.grid(row=0, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
 
 # 3. Define the buttons in a grid layout (Label, Row, Column)
 buttons = [
@@ -71,7 +71,16 @@ for text, row, col in buttons:
     btn = tk.Button(
         root, text=text, padx=20, pady=20, font=("Arial", 14), command=action
     )
-    btn.grid(row=row, column=col, sticky="nsew")
+    btn.grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
+
+# Make rows and columns expand with the window
+for i in range(4):  # columns 0-3
+    root.grid_columnconfigure(i, weight=1, minsize=37.5)
+
+for i in range(5):  # rows 0-4
+    root.grid_rowconfigure(i, weight=1)
+
+root.grid_rowconfigure(0, weight=1,minsize=50)
 
 # 5. Start the application loop (keeps the window open)
 root.mainloop()
