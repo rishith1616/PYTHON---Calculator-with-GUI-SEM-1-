@@ -1,5 +1,28 @@
 import tkinter as tk
 
+last_display_size = 0
+last_button_size = 0
+
+def resize_font(e):
+    global last_display_size, last_button_size
+
+    width = root.winfo_width()
+    height = root.winfo_height()
+
+    display_size = max(12, min(width // 15, height // 10))
+    button_size = max(8, min(width // 25, height // 18))
+
+    # Only update if size changed
+    if display_size != last_display_size:
+        display.config(font=("Arial", display_size))
+        last_display_size = display_size
+
+    if button_size != last_button_size:
+        for btn in buttons_list:
+            btn.config(font=("Arial", button_size))
+
+        last_button_size = button_size
+
 
 def button_click(number):
     """Appends the clicked number or operator to the display."""
@@ -26,17 +49,6 @@ def calculate():
         display.delete(0, tk.END)
         display.insert(0, "Error")
 
-def resize_font(e):
-    display_font_size = max(12, min(root.winfo_width() // 15, root.winfo_height() // 10))
-    button_font_size = max(8, min(root.winfo_width() // 25, root.winfo_height() // 18))
-    
-     # Resize display font
-    display.config(font=("Arial", display_font_size))
-
-    # Resize all button fonts
-    for widget in root.winfo_children():
-        if isinstance(widget, tk.Button):
-            widget.config(font=("Arial", button_font_size))
 
 
 
@@ -45,6 +57,7 @@ root = tk.Tk()
 root.title("Calculator With GUI")
 root.minsize(150, 200)
 root.bind("<Configure>", resize_font)
+buttons_list = []
 
 # 2. Create the display entry box
 display = tk.Entry(
@@ -86,6 +99,7 @@ for text, row, col in buttons:
         root, text=text, padx=20, pady=20, font=("Arial", 14), command=action
     )
     btn.grid(row=row, column=col, sticky="nsew", padx=2, pady=2)
+    buttons_list.append(btn)
 
 # Make rows and columns expand with the window
 for i in range(4):  # columns 0-3
